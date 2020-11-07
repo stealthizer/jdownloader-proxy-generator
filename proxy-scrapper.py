@@ -21,7 +21,7 @@ def create_proxy_record(address, port, type, enabled):
     proxy_preferences['connectMethodPreferred'] = False
     proxy_record['proxy'] = proxy_preferences
     proxy_record['rangeRequestsSupported'] = True
-    proxy_record['filter'] = False
+    proxy_record['filter'] = None
     proxy_record['pac'] = False
     proxy_record['reconnectSupported'] = False
     proxy_record['enabled'] = enabled
@@ -37,9 +37,7 @@ def create_json_structure(proxies):
 
 res = requests.get(proxy_site_url, headers={'User-Agent': user_agent})
 soup = BeautifulSoup(res.text, "lxml")
-proxy_list = list()
-proxy_list.append(proxy_list.append(create_proxy_record(type="NONE", address=None,
-                                                        port=80, enabled=True)))
+proxy_list = [create_proxy_record(type="NONE", address=None, port=80, enabled=True)]
 
 for items in soup.select("#proxylisttable tbody tr"):
     proxy_definition = []
@@ -47,10 +45,10 @@ for items in soup.select("#proxylisttable tbody tr"):
         proxy_definition.append(item.text)
     proxy_list.append(
         create_proxy_record(
-            type=proxy_definition[4].lower(), address=proxy_definition[0], port=int(proxy_definition[1]), enabled=False
+            type=proxy_definition[4].upper(), address=proxy_definition[0], port=int(proxy_definition[1]), enabled=True
         )
     )
 
 json_output = create_json_structure(proxy_list)
 with open(filename, 'w') as f:
-    json.dump(json_output, f, indent=4)
+    json.dump(json_output, f, indent=2)
