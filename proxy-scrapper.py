@@ -57,7 +57,7 @@ def get_proxies_from_proxyscan_io():
     proxy_list = list()
     for item in proxies:
         if len(item["Type"]) > 1:
-            if "SOCKS5" in item["Type"].upper():
+            if "SOCKS5" in item["Type"]:
                 item["Type"] = "SOCKS5"
             else:
                 item["Type"] = "HTTPS"
@@ -72,8 +72,8 @@ def get_proxies_from_proxyscan_io():
     return proxy_list
 
 proxy_list = list([create_proxy_record(type="NONE", address=None, port=80, enabled=True)])
-proxy_list.append(get_proxies_from_proxyscan_io())
-proxy_list.append(get_proxies_from_free_proxy_net())
+proxy_list = proxy_list + get_proxies_from_proxyscan_io()
+proxy_list = proxy_list + get_proxies_from_free_proxy_net()
 json_output = create_json_structure(proxy_list)
 with open(filename, 'w') as f:
     json.dump(json_output, f, indent=2)
