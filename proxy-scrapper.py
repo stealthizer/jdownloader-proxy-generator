@@ -39,7 +39,7 @@ def get_proxies_from_free_proxy_net():
     res = requests.get(proxy_site_url, headers={'User-Agent': user_agent})
     soup = BeautifulSoup(res.text, "lxml")
     proxy_list = list()
-    for items in soup.select("#proxylisttable tbody tr"):
+    for items in soup.select("tbody tr"):
         proxy_definition = []
         for item in items.select("td")[:8]:
             proxy_definition.append(item.text)
