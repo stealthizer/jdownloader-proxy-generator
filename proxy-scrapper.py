@@ -72,7 +72,7 @@ def get_proxies_from_proxyscan_io():
     return proxy_list
 
 proxy_list = list([create_proxy_record(type="NONE", address=None, port=80, enabled=True)])
-proxy_list = proxy_list + get_proxies_from_proxyscan_io()
+#proxy_list = proxy_list + get_proxies_from_proxyscan_io()
 proxy_list = proxy_list + get_proxies_from_free_proxy_net()
 json_output = create_json_structure(proxy_list)
 with open(filename, 'w') as f:
